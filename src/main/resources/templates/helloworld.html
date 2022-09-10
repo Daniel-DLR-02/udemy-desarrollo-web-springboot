@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Titulo hello world</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>NAME</th>
+                <th>HEAD</th>
+            </tr>
+        </thead>
+        <tbody th:each="person : ${people}">
+            <tr>
+                <td th:text="${person.name}"></td>
+                <td th:text="${person.age}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
