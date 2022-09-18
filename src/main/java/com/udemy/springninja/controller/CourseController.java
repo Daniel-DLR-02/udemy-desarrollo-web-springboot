@@ -2,16 +2,14 @@ package com.udemy.springninja.controller;
 
 import com.udemy.springninja.converter.CourseConverter;
 import com.udemy.springninja.entity.Course;
+import com.udemy.springninja.model.CourseModel;
 import com.udemy.springninja.service.CourseService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -42,5 +40,20 @@ public class CourseController {
         courseService.addCourse(course);
         return "redirect:/course/all";
     }
+
+    @PutMapping("/update/{id}")
+    public String updateCourse(@PathVariable("id") int id,@ModelAttribute("course") CourseModel course){
+        LOG.info("Call " + "updateCourse()" + "-- ID:  " + id);
+        courseService.updateCourse(id,course);
+        return "redirect:/course/all";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable("id") int id){
+        LOG.info("Call " + "deleteCourse()" + "-- ID:  " + id);
+        courseService.deleteCourse(id);
+        return "redirect:/course/all";
+    }
+
 
 }

@@ -12,6 +12,8 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Hours</th>
+                <th>Delete</th>
+
             </tr>
         </thead>
         <tbody>
@@ -20,6 +22,14 @@
             <td><span th:text="${course.description}"></span></td>
             <td><span th:text="${course.price}"></span></td>
             <td><span th:text="${course.hours}"></span></td>
+            <td>
+                <!--<button id="delete" name="delete" th:action="@{'/course/delete/{id}'(id=${course.id})}" th:method="delete">X</button>-->
+                <form action="#" th:action="@{'/course/delete/{id}'(id=${course.id})}" th:method="delete" >
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" id="submitButton">X</button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>
