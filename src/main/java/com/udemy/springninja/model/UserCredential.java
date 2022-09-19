@@ -10,7 +10,8 @@ public class UserCredential {
         this.password = password;
     }
 
-    public UserCredential() {}
+    public UserCredential() {
+    }
 
     public String getUsername() {
         return username;

@@ -7,20 +7,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
     @Id
-    @Column(name = "username",unique = true,length = 45)
+    @Column(name = "username", unique = true, length = 45)
     private String username;
 
-    @Column(name = "password",nullable = false,length = 60)
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "enabled",nullable = false)
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<UserRole> userRole = new HashSet<UserRole>();
 
     public User(String username, String password, boolean enabled) {

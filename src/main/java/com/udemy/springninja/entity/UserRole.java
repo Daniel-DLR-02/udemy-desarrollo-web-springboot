@@ -3,8 +3,8 @@ package com.udemy.springninja.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="user_roles",uniqueConstraints = @UniqueConstraint(
-        columnNames = {"role","username"}
+@Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(
+        columnNames = {"role", "username"}
 ))
 public class UserRole {
 
@@ -13,11 +13,11 @@ public class UserRole {
     @Column(name = "user_role_id", unique = true, nullable = false)
     private Long userRoleId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username", nullable = false)
     private User user;
 
-    @Column(name="role",nullable = false,length = 45)
+    @Column(name = "role", nullable = false, length = 45)
     private String role;
 
     public UserRole(User user, String role) {
@@ -25,7 +25,8 @@ public class UserRole {
         this.role = role;
     }
 
-    public UserRole() {}
+    public UserRole() {
+    }
 
     public User getUser() {
         return user;

@@ -8,6 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +27,15 @@ public class ContactController {
     private static final Log LOG = LogFactory.getLog(ContactController.class);
 
     @GetMapping("/cancel")
-    public String cancel(){
+    public String cancel() {
         return "redirect:/contacts/showcontacts";
     }
 
     @GetMapping("/contactform")
-    private ModelAndView redirectContactForm(Model model,@RequestParam(name = "id",required = false) Long id){
+    private ModelAndView redirectContactForm(Model model, @RequestParam(name = "id", required = false) Long id) {
         ModelAndView mov = new ModelAndView(ViewConstant.CONTACT_FORM);
         ContactModel contactBuscado = new ContactModel();
-        if(id != 0){
+        if (id != 0) {
             contactBuscado = contactService.findContactByIdModel(id);
         }
         model.addAttribute("contactModel", contactBuscado);
@@ -41,27 +44,30 @@ public class ContactController {
 
     @PostMapping("/addcontact")
     public String addContact(@ModelAttribute(name = "contactModel") ContactModel contactModel,
-                             Model model){
-        LOG.info("METHOD: addContact() -- PARAMS "+contactModel.toString());
+                             Model model) {
+        LOG.info("METHOD: addContact() -- PARAMS " + contactModel.toString());
 
-        if(null != contactService.addContact(contactModel)){
-            model.addAttribute("result",1);
-        }else{
-            model.addAttribute("result",0);
+        if (null != contactService.addContact(contactModel)) {
+            model.addAttribute("result", 1);
+        } else {
+            model.addAttribute("result", 0);
         }
 
         return "redirect:/contacts/showcontacts";
     }
 
     @GetMapping("/showcontacts")
-    public ModelAndView showContacts(){
+    public ModelAndView showContacts() {
         ModelAndView mov = new ModelAndView(ViewConstant.CONTACTS);
-        mov.addObject("contacts",contactService.listAllContacts());
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        mov.addObject("username", user.getUsername());
+        mov.addObject("contacts", contactService.listAllContacts());
         return mov;
     }
 
     @GetMapping("/removecontact")
-    public ModelAndView removeContact(@RequestParam(name = "id",required = true) Long id){
+    public ModelAndView removeContact(@RequestParam(name = "id", required = true) Long id) {
         contactService.removeContact(id);
         return showContacts();
     }
