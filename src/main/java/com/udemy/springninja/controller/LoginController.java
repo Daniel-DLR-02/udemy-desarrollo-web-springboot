@@ -1,6 +1,9 @@
 package com.udemy.springninja.controller;
 
+import com.udemy.springninja.constants.ViewConstant;
 import com.udemy.springninja.model.UserCredential;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
 
+    private static final Log LOG = LogFactory.getLog(LoginController.class);
+
     @GetMapping("/")
     public String redirectToLogin(){
+        LOG.info("METHOD: refirectToLogin()");
         return "redirect:/login";
     }
 
@@ -21,18 +27,23 @@ public class LoginController {
     public String showLoginForm(Model model,
                                 @RequestParam(name="error",required = false) String error,
                                 @RequestParam(name="logout",required = false) String logout){
+        LOG.info("METHOD: showingLoginForm() -- PARAMS error=" + error +"logout="+ logout);
         model.addAttribute("error", error);
         model.addAttribute("logout", logout);
         model.addAttribute("userCredentials", new UserCredential());
-        return "login";
+        LOG.info("Returning to login view");
+        return ViewConstant.LOGIN;
     }
 
     @PostMapping("/logincheck")
     public String loginCheck(@ModelAttribute(name="userCredential") UserCredential userCredential){
+        LOG.info("METHOD: loginCheck() -- PARAMS"+userCredential.toString());
         if(userCredential.getUsername().equals("user") && userCredential.getPassword().equals("user")){
-            return "contacts";
+            LOG.info("Returning to contacs view");
+            return "redirect:/contacts/showcontacts";
         }
         else{
+            LOG.info("Redirect to login?error");
             return "redirect:/login?error";
         }
     }

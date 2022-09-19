@@ -24,6 +24,6 @@ public class RequestTimeInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         long startTime = (long)request.getAttribute("startTime");
-        LOG.info("-- REQUEST URL: '"+ request.getRequestURL().toString() + "' --Total time: " + (System.currentTimeMillis() - startTime) + "'ms");
+        LOG.info("Url to: '"+ request.getRequestURL().toString() + "' in: " + (System.currentTimeMillis() - startTime) + "'ms");
     }
 }
